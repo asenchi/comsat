@@ -1,6 +1,7 @@
 require "cgi"
 require "comsat/version"
-require 'pagerduty'
+require "json"
+require "rest_client"
 require "securerandom"
 
 module Comsat
@@ -11,7 +12,6 @@ module Comsat
 
     def send_notice(data)
       @urls.each do |url|
-        puts 'run'
         ServiceFactory.create(url).send_notice(data)
       end
     end
@@ -34,14 +34,14 @@ module Comsat
       uri = URI.parse(url)
       case uri.scheme
       when 'campfire'
-        CampfireService.new(uri)
+        Campfire.new(uri)
       when 'pagerduty'
-        PagerDutyService.new(uri)
+        PagerDuty.new(uri)
       end
     end
   end
 
-  class CampfireService
+  class Campfire
     def initialize(uri)
       @acct = uri.host.split('.')[0]
       @api_key = uri.user
@@ -77,7 +77,9 @@ module Comsat
     end
   end
 
-  class PagerDutyService
+  class PagerDuty
+    ENDPOINT = 'https://events.pagerduty.com/generic/2010-04-15/create_event.json'
+    
     def initialize(uri)
       @api_key = uri.user
     end
@@ -85,10 +87,10 @@ module Comsat
     def send_notice(data)
       message    = data[:message]
       source     = data[:source]
-      
       message = "#{source}: #{message}"
-      p = Pagerduty.new @api_key
-      p.trigger message
+      data = { :service_key => @api_key, :event_type => 'trigger', :description => message }
+     
+      RestClient.post ENDPOINT, data.to_json, :content_type => :json
     end
     alias :send_alert :send_notice
     alias :send_resolve :send_notice
