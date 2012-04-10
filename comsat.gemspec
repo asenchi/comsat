@@ -15,5 +15,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Comsat::VERSION
 
+  gem.add_runtime_dependency('pagerduty')
+  gem.add_runtime_dependency('curb')
   gem.add_runtime_dependency('tinder')
 end
