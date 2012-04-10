@@ -3,6 +3,7 @@ require "comsat/version"
 require "json"
 require "rest_client"
 require "securerandom"
+require "tinder"
 
 module Comsat
   class Client
@@ -51,7 +52,7 @@ module Comsat
     def send_notice(data)
       # {:messages, :source, :message_id}
       messages = []
-      messages << "[#{data[:source]}] #{data[:message]} :v:"
+      messages << "[#{data[:source]}] #{data[:message]}"
       send_message(messages)
     end
     alias :send_alert :send_notice

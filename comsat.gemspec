@@ -4,8 +4,8 @@ require File.expand_path('../lib/comsat/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["curt@heroku.com", "gorsuch@heroku.com"]
   gem.email         = ["ops@heroku.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = "Early notification gem"
+  gem.summary       = "Early notification gem"
   gem.homepage      = ""
 
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
