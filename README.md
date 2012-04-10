@@ -1,6 +1,43 @@
 # Comsat
 
-TODO: Write a gem description
+Notifications gem
+
+This is the first iteration for making notifications easy to use from all
+services. This is only a stop gap with a centralized service planned to manage
+credentials and to keep from duplicating efforts.
+
+Credentials are passed in a URL structure, for example, here is what a scheme
+for Campfire might look like:
+
+    campfire://<api_key>:X@blossom.campfirenow.com/Test%20Room
+
+The schema name maps to the service name, the rest we pass to the service to
+deal with.
+
+## Messages
+
+Messages should be one of three types, 'notice', 'alert', 'resolve'.
+
+Messages are datum's that contain three pieces of information:
+
+* message
+* source
+* message_id
+
+The 'source' is where this message originates, for example, "nagios". The
+'message_id' should be a unique identifier for this message, and for certain
+services should be used on alert/resolve messages to easily resolve them (i.e.
+PagerDuty).
+
+## Services
+
+Each service should define three methods, one for each type of message:
+
+* send_notice
+* send_alert
+* send_resolve
+
+These provide the common interface between all of the services.
 
 ## Installation
 
@@ -18,7 +55,10 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```
+client = Comsat::Client.new(["campfire://<api_key>:X@blossom.campfirenow.com/Test%20Room"])
+client.send_notice({:message => "message here", :source => "nagios", :message_id => "unique_id"})
+```
 
 ## Contributing
 
