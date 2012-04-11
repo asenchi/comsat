@@ -2,10 +2,10 @@
 require File.expand_path('../lib/comsat/version', __FILE__)
 
 Gem::Specification.new do |gem|
-  gem.authors       = ["curt@heroku.com", "gorsuch@heroku.com"]
+  gem.authors       = ["Curt Micol", "Michael Gorsuch"]
   gem.email         = ["ops@heroku.com"]
-  gem.description   = "Early notification gem"
-  gem.summary       = "Early notification gem"
+  gem.description   = "Notifications as a Gem"
+  gem.summary       = "Notifications as a Gem"
   gem.homepage      = ""
 
   gem.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
@@ -16,5 +16,6 @@ Gem::Specification.new do |gem|
   gem.version       = Comsat::VERSION
 
   gem.add_runtime_dependency('rest-client')
+  gem.add_runtime_dependency('scrolls')
   gem.add_runtime_dependency('tinder')
 end
