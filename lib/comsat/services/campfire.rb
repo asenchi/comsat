@@ -6,6 +6,8 @@ module Comsat
       messages << "[#{data[:source]}] #{data[:message]}"
       send_message(messages)
     end
+    alias :send_alert :send_notice
+    alias :send_resolve :send_notice
 
     private
 
