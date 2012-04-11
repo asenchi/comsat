@@ -1,6 +1,8 @@
 module Comsat
   module Service
     class Base
+      attr_reader :credentials
+
       def initialize(url)
         @credentials = Comsat::AuthHelper.parse(url)
       end
