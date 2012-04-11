@@ -45,20 +45,20 @@ module Comsat
     end
 
     def send_notice(data)
-      send(:notice, data)
+      send_event(:notice, data)
     end
 
     def send_alert(data)
-      send(:alert, data)
+      send_event(:alert, data)
     end
 
     def send_resolve(data)
-      send(:resolve, data)
+      send_event(:resolve, data)
     end
 
     private
 
-    def send(event_type, data)
+    def send_event(event_type, data)
       @urls.each do |url|
         service = ServiceFactory.create(url)
         if service.respond_to?("send_#{event_type}")
