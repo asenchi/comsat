@@ -14,6 +14,19 @@ for Campfire might look like:
 The schema name maps to the service name, the rest we pass to the service to
 deal with.
 
+## Routes
+
+Routes allow the user to create aliases for contacting one or more services
+for a specific event. An event is one of 'notice', 'alert' or 'resolve'.
+Routes should be named according to their function, and initially are not
+stored longer than a session, but will eventually be created and reside on
+the server.
+
+It is our intention to start developing usage patterns consistent with our
+defined design goals.
+
+The examples below show how routes are created.
+
 ## Messages
 
 Messages should be one of three types, 'notice', 'alert', 'resolve'.
@@ -56,8 +69,13 @@ Or install it yourself as:
 ## Usage
 
 ```
-client = Comsat::Client.new(["campfire://<api_key>:X@blossom.campfirenow.com/Test%20Room"])
-client.send_notice({:message => "message here", :source => "nagios", :message_id => "unique_id"})
+client = Comsat::Client.new
+client.create_route("notify_on_exception", "notice", ["campfire://<api_key>:X@blossom.campfirenow.com/Test%20Room"])
+client.notify("notify_on_exception", {
+  :message => "Exception reached in #function",
+  :source => "my_app",
+  :message_id => "exception-#{rand(1_000)}"
+})
 ```
 
 ## Contributing
