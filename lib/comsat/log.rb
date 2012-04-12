@@ -2,7 +2,6 @@ module Comsat
   module Log
     def self.start
       Scrolls::Log.start
-      log(ns: "log", fn: "start")
     end
 
     def self.merge(data1, data2)
@@ -10,7 +9,7 @@ module Comsat
     end
 
     def self.log(data, &blk)
-      Scrolls.log(merge({app: "comsat"}, data), &blk)
+      Scrolls.log(data, &blk)
     end
   end
 end
