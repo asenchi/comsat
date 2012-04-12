@@ -15,7 +15,7 @@ module Comsat
       id         = data[:message_id] || rand(10_000)
       message    = data[:message]
       source     = data[:source]
-      message = "#{source}: #{message}"
+      message = "[#{source}] #{message}"
 
       data = {
         :service_key => @credentials.api_key,
