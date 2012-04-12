@@ -2,10 +2,6 @@ require "cgi"
 require "json"
 require "rest_client"
 require "scrolls"
-require "securerandom"
-
-# Service includes
-require "tinder"
 
 require "comsat/log"
 require "comsat/route"
