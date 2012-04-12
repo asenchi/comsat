@@ -17,7 +17,6 @@ Gem::Specification.new do |gem|
 
   gem.add_runtime_dependency('rest-client')
   gem.add_runtime_dependency('scrolls')
-  gem.add_runtime_dependency('tinder')
 
   gem.add_development_dependency('rake')
   gem.add_development_dependency('rspec')

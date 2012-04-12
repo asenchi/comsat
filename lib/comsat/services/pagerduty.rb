@@ -1,7 +1,5 @@
 module Comsat
   class PagerDuty < Service::Base
-    PAGERDUTY_ENDPOINT = 'https://events.pagerduty.com/generic/2010-04-15/create_event.json'
-
     def send_notice(data)
       contact_pagerduty(:trigger, data)
     end
@@ -14,7 +12,7 @@ module Comsat
     private
 
     def contact_pagerduty(event_type, data)
-      id         = data[:message_id] || SecureRandom.uuid
+      id         = data[:message_id] || rand(10_000)
       message    = data[:message]
       source     = data[:source]
       message = "#{source}: #{message}"
@@ -25,7 +23,7 @@ module Comsat
         :event_type => event_type,
         :description => message
       }
-      RestClient.post PAGERDUTY_ENDPOINT, data.to_json, :content_type => :json
+      RestClient.post "https://#{@credential.host}/#{@credential.scope}", data.to_json, :content_type => :json
     end
   end
 end

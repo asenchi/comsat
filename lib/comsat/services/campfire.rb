@@ -15,19 +15,28 @@ module Comsat
       unless room = find_room
         raise "Unable to find room"
       end
-      Array(msgs).each {|line| room.speak line }
+      Array(msgs).each {|line| speak(room["id"], line) }
     end
 
     def campfire
-      @campfire = ::Tinder::Campfire.new(
-        @credentials.host.split('.')[0],
-        :ssl => true,
-        :token => @credentials.api_key
+      @campfire = RestClient::Resource.new(
+        "https://#{@credentials.api_key}:X@#{@credentials.host}",
+        :headers => {:content_type => :json}
       )
     end
 
     def find_room
-      campfire.find_room_by_name(@credentials.scope)
+      if @credentials.scope.to_i > 0
+        @room = {"id" => @credentials.scope.to_i}
+      else
+        rooms = JSON.parse(campfire['/rooms.json'].get)
+        @room = rooms["rooms"].select {|r| r["name"] == @credentials.scope }
+        @room.first
+      end
+    end
+
+    def speak(room, message)
+      campfire["/room/#{room}/speak.json"].post(JSON.dump({:message => message}))
     end
   end
 end
