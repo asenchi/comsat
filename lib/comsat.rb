@@ -23,7 +23,7 @@ module Comsat
   end
 
   def self.logger
-    @logger
+    @logger || STDOUT.method(:puts)
   end
 
   def self.log(data, &blk)
