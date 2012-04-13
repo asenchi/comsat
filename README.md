@@ -91,7 +91,7 @@ module MyLogger
   end
 end
 
-Comsat.instrument_with(MyLogger.method(:puts))
+Comsat.instrument_with(MyLogger.method(:log))
 ```
 
 ## Contributing
