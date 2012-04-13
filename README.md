@@ -68,7 +68,7 @@ Or install it yourself as:
 
 ## Usage
 
-```
+```ruby
 client = Comsat::Client.new
 client.create_route("notify_on_exception", "notice", ["campfire://<api_key>:X@blossom.campfirenow.com/Test%20Room"])
 client.notify("notify_on_exception", {
@@ -76,6 +76,22 @@ client.notify("notify_on_exception", {
   :source => "my_app",
   :message_id => "exception-#{rand(1_000)}"
 })
+```
+
+You can also instrument Comsat with your favorite logger (which should be
+Scrolls by now :)):
+
+```ruby
+require "scrolls"
+require "comsat"
+
+module MyLogger
+  def self.log(data, &blk)
+    Scrolls.log(data, &blk)
+  end
+end
+
+Comsat.instrument_with(MyLogger.method(:puts))
 ```
 
 ## Contributing
