@@ -12,23 +12,23 @@ module Comsat
 
     def create_route(route, event_type, services)
       start = Time.now
-      Comsat.log(:fn => :create_route, :at => :start)
+      Comsat.log(:fn => :create_route, :route => "#{route}", :at => :start)
       unless routes.detect {|r| r.name == route }
         routes << Route.new(route, event_type, services)
       end
-      Comsat.log(:fn => :create_route, :at => :finish, :elapsed => Time.now - start)
+      Comsat.log(:fn => :create_route, :route => "#{route}", :at => :finish, :elapsed => Time.now - start)
     end
 
     def notify(route, message={})
       start = Time.now
-      Comsat.log(:fn => :notify, :at => :start)
+      Comsat.log(:fn => :notify, :route => "#{route}", :at => :start)
       notify_route = @@routes.detect {|r| r.name == route } if message
       event = notify_route.event_type
       notify_route.services.each do |svc|
         Comsat.log(:fn => :notify, :service => "#{svc.class.to_s.downcase}", :event => event)
         svc.send("send_#{event}".to_sym, message)
       end
-      Comsat.log(:fn => :notify, :at => :finish, :elapsed => Time.now - start)
+      Comsat.log(:fn => :notify, :route => "#{route}", :at => :finish, :elapsed => Time.now - start)
     end
 
     def send_notice(data)
