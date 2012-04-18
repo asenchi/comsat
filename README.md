@@ -86,11 +86,11 @@ the payload:
 client = Comsat::Client.new
 client.create_route("notify_on_exception", ["campfire://<api_key>:X@blossom.campfirenow.com/Test%20Room"])
 client.notify("notify_on_exception", {
-    :message => "Exception reached in #function",
-    :source => "my_app",
-    :message_id => "exception-#{rand(1_000)}",
-    :message_type => "notice"
-    })
+  :message => "Exception reached in #function",
+  :source => "my_app",
+  :message_id => "exception-#{rand(1_000)}",
+  :message_type => "notice"
+})
 ```
 
 You can also instrument Comsat with your favorite logger (which should be
