@@ -36,6 +36,7 @@ Messages are datum's that contain three pieces of information:
 * message
 * source
 * message_id
+* message_type
 
 The 'source' is where this message originates, for example, "nagios". The
 'message_id' should be a unique identifier for this message, and for certain
@@ -76,6 +77,20 @@ client.notify("notify_on_exception", {
   :source => "my_app",
   :message_id => "exception-#{rand(1_000)}"
 })
+```
+
+Or you can specify routes without an 'event_type', instead specifying it in
+the payload:
+
+```ruby
+client = Comsat::Client.new
+client.create_route("notify_on_exception", ["campfire://<api_key>:X@blossom.campfirenow.com/Test%20Room"])
+client.notify("notify_on_exception", {
+    :message => "Exception reached in #function",
+    :source => "my_app",
+    :message_id => "exception-#{rand(1_000)}",
+    :message_type => "notice"
+    })
 ```
 
 You can also instrument Comsat with your favorite logger (which should be

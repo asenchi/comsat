@@ -12,28 +12,49 @@ describe Comsat::Client do
   end
 
   describe "#create_route" do
-    before do
-      subject.create_route("test_route", "notice", [undefined_svc, defined_svc])
+
+    describe "specify event_types" do
+      before do
+        subject.create_route("test_route", "notice", [undefined_svc, defined_svc])
+      end
+
+      it "should register a route with base class" do
+        subject.routes.should_not be_empty
+      end
+
+      it "should create a route" do
+        subject.routes.first.name.should == "test_route"
+      end
+
+      it "should have one service initiated on the event_type 'notice'" do
+        subject.routes.first.services["notice"].length.should == 1
+      end
+
+      it "should have a campfire service initiated" do
+        subject.routes.first.services["notice"].first.class.should == Comsat::Campfire
+      end
+
+      it "should provide an event type" do
+        subject.routes.first.event_type == "notice"
+      end
     end
 
-    it "should register a route with base class" do
-      subject.routes.should_not be_empty
-    end
+    describe "no event_type specified" do
+      before do
+        subject.create_route("test_route2", [defined_svc])
+      end
 
-    it "should create a route" do
-      subject.routes.first.name.should == "test_route"
-    end
+      it "should register a route with base class" do
+        subject.routes.should_not be_empty
+      end
 
-    it "should have one service initiated" do
-      subject.routes.first.services.length.should == 1
-    end
+      it "should create a route" do
+        subject.routes.first.name.should == "test_route2"
+      end
 
-    it "should have a campfire service initiated" do
-      subject.routes.first.services.first.class.should == Comsat::Campfire
-    end
-
-    it "should provide an event type" do
-      subject.routes.first.event_type == "notice"
+      it "should have one service initiated on all event_types" do
+        subject.routes.first.services["all"].length.should == 1
+      end
     end
   end
 end

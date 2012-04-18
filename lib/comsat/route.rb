@@ -2,16 +2,23 @@ module Comsat
   class Route
     attr_accessor :name, :services, :event_type
 
-    def initialize(route, et, urls)
+    def initialize(route, et=nil, urls)
       @name = route
-      @event_type = et if %w(alert notice resolve).include?(et)
-      @services = []
+      @event_type = et
+
+      @services = {
+        "notice" => [],
+        "alert" => [],
+        "resolve" => [],
+        "all" => []
+      }
+
       urls.each do |url|
         svc = ServiceFactory.create(url)
         if svc.respond_to?("send_#{@event_type}")
-          @services << svc
+          @services[@event_type] << svc
         else
-          next
+          @services["all"] << svc
         end
       end
     end
