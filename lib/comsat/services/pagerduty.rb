@@ -17,7 +17,7 @@ module Comsat
       source     = data[:source]
       message = "[#{source}] #{message}"
 
-      pagerduty_url = "https://#{@credentials.host}/#{@credentials.scope}"
+      pagerduty_url = "https://#{@credentials.host}/generic/2010-04-15/create_event.json"
       data = {
         :service_key => @credentials.api_key,
         :incident_key => id,
