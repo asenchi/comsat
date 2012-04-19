@@ -27,11 +27,11 @@ describe Comsat::Client do
       end
 
       it "should have one service initiated on the event_type 'notice'" do
-        subject.routes.first.services["notice"].length.should == 1
+        subject.routes.first.services["notice"].compact.length.should == 1
       end
 
       it "should have a campfire service initiated" do
-        subject.routes.first.services["notice"].first.class.should == Comsat::Campfire
+        subject.routes.first.services["notice"].compact.first.class.should == Comsat::Campfire
       end
 
       it "should provide an event type" do
@@ -53,7 +53,9 @@ describe Comsat::Client do
       end
 
       it "should have one service initiated on all event_types" do
-        subject.routes.first.services["all"].length.should == 1
+        subject.routes.first.services["notice"].compact.length.should == 1
+        subject.routes.first.services["alert"].compact.length.should == 1
+        subject.routes.first.services["resolve"].compact.length.should == 1
       end
     end
   end
