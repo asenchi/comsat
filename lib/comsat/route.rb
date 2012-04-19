@@ -9,8 +9,7 @@ module Comsat
       @services = {
         "notice" => [],
         "alert" => [],
-        "resolve" => [],
-        "all" => []
+        "resolve" => []
       }
 
       urls.each do |url|
@@ -18,7 +17,9 @@ module Comsat
         if svc.respond_to?("send_#{@event_type}")
           @services[@event_type] << svc
         else
-          @services["all"] << svc
+          @services.keys.each do |k|
+            @services[k] << svc
+          end
         end
       end
     end
