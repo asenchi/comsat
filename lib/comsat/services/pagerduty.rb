@@ -24,7 +24,7 @@ module Comsat
         :event_type => event_type,
         :description => message
       }
-      RestClient.post pagerduty_url, data.to_json, :content_type => :json
+      http_post pagerduty_url, data.to_json, :content_type => :json
     end
   end
 end
