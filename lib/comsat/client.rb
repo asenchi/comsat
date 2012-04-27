@@ -10,6 +10,17 @@ module Comsat
       @@routes
     end
 
+    # Public: Create a route for the specified services
+    #
+    # route - Name of the route we want to create
+    # event_type - Tie this route to a specific event type (notice, alert, resolve)
+    # services - An array of service url's
+    #
+    # Examples
+    #
+    #   client.create_route("my_route", [campfire://localhost, pagerduty://localhost])
+    #
+    # Returns the created route object
     def create_route(route, event_type=nil, services)
       start = Time.now
       Comsat.log(:fn => :create_route, :route => "#{route}", :at => :start)
@@ -19,6 +30,21 @@ module Comsat
       Comsat.log(:fn => :create_route, :route => "#{route}", :at => :finish, :elapsed => Time.now - start)
     end
 
+    # Public: Notify a particular route
+    #
+    # route - Name of the route we want to notify
+    # msg   - Message payload (Hash)
+    #   message - The actual test of the message
+    #   message_id - unique identifier for the message
+    #   source - The source of the message (helps identify where it came from)
+    #   message_type - Event type, notice, alert or resolve (optional)
+    #
+    # Examples
+    #
+    #   client.notify("my_route", {:message => "my message", :message_id =>
+    #   "unique id", :source => "me", :message_type => "notice"})
+    #
+    # Returns nil
     def notify(route, msg={})
       message = msg.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
 
