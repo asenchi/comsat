@@ -29,14 +29,30 @@ module Comsat
       if @credentials.scope.to_i > 0
         @room = {"id" => @credentials.scope.to_i}
       else
-        rooms = JSON.parse(campfire['/rooms.json'].get)
+
+        begin
+          rooms = JSON.parse(campfire['/rooms.json'].get)
+        rescue RestClient::ServerBrokeConnection => e
+          retries += 1
+          raise if retries >= 3
+          Comsat.log(:fn => :find_room, :at => :get_room, :error => e.class, :retry => retries)
+          retry
+        end
+
         @room = rooms["rooms"].select {|r| r["name"] == @credentials.scope }
         @room.first
       end
     end
 
     def speak(room, message)
-      campfire["/room/#{room}/speak.json"].post(JSON.dump({:message => message}))
+      begin
+        campfire["/room/#{room}/speak.json"].post(JSON.dump({:message => message}))
+      rescue RestClient::ServerBrokeConnection => e
+        retries += 1
+        raise if retries >= 3
+        Comsat.log(:fn => :speak, :at => :get_room, :error => e.class, :retry => retries)
+        retry
+      end
     end
   end
 end

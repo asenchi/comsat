@@ -62,7 +62,11 @@ module Comsat
 
       notify_route.services[event].each do |svc|
         Comsat.log(:fn => :notify, :service => "#{svc.class.to_s.downcase}", :event => event)
-        svc.send("send_#{event}".to_sym, message)
+        begin
+          svc.send("send_#{event}".to_sym, message)
+        rescue Exception => e
+          Comsat.log(:fn => :notify, :service => "#{svc.class.to_s.downcase}", :event => event, :error => e.class, :message => e.message)
+        end
       end
       Comsat.log(:fn => :notify, :route => "#{route}", :at => :finish, :elapsed => Time.now - start)
     end
