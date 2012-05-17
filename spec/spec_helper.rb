@@ -15,4 +15,11 @@ end
 Comsat.instrument_with(TestLogger.method(:log))
 
 RSpec.configure do |c|
+  c.before(:all) do
+    Comsat.mock!
+  end
+
+  c.before(:each) do
+    Comsat.reset!
+  end
 end

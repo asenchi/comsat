@@ -4,6 +4,7 @@ describe Comsat::Client do
   subject { described_class.new }
   let(:undefined_svc) { "svc://api_key:X@host/scope" }
   let(:defined_svc)   { "campfire://api_key:X@blossom.campfirenow.com/scope" }
+  let(:failure_svc)   { "failure://X:X@failure.com/scope" }
 
   describe "#routes" do
     it "has zero routes configured by default" do
@@ -57,6 +58,25 @@ describe Comsat::Client do
         subject.routes.first.services["alert"].compact.length.should == 1
         subject.routes.first.services["resolve"].compact.length.should == 1
       end
+    end
+  end
+
+  describe "#notify" do
+    it "should notify the valid services" do
+      subject.create_route("test_route", "notice", [undefined_svc, defined_svc])
+      subject.notify("test_route", {
+        :message => "message",
+        :source => "test"
+      })
+      Comsat.notifications.size.should == 1
+    end
+
+    it "should return false if any notifications failed" do
+      subject.create_route("failure_route", "notice", [failure_svc])
+      subject.notify("failure_route", {
+        :message => "message",
+        :source => "test"
+      }).should be_false
     end
   end
 end

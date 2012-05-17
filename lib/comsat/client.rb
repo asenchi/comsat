@@ -44,12 +44,13 @@ module Comsat
     #   client.notify("my_route", {:message => "my message", :message_id =>
     #   "unique id", :source => "me", :message_type => "notice"})
     #
-    # Returns nil
+    # Returns false if there are failed notifications
     def notify(route, msg={})
       message = msg.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
 
+      success = true
       start = Time.now
-      Comsat.log(:fn => :notify, :route => "#{route}", :at => :start)
+      Comsat.log(:fn => :notify, :route => route, :at => :start)
       notify_route = @@routes.detect {|r| r.name == route } if message
 
       if notify_route.event_type
@@ -61,14 +62,22 @@ module Comsat
       end
 
       notify_route.services[event].each do |svc|
-        Comsat.log(:fn => :notify, :service => "#{svc.class.to_s.downcase}", :event => event)
+        Comsat.log(:fn => :notify, :service => svc.class.to_s.downcase, :event => event)
         begin
-          svc.send("send_#{event}".to_sym, message)
+          if Comsat.mocking? && !svc.is_a?(Comsat::Failure) && !svc.nil?
+            Comsat.notifications << { :route => route, :service => svc.class.to_s.downcase, :event => event, :message => message }
+          else
+            svc.send("send_#{event}".to_sym, message)
+          end
         rescue Exception => e
+          success = false
           Comsat.log(:fn => :notify, :service => "#{svc.class.to_s.downcase}", :event => event, :error => e.class, :message => e.message)
         end
       end
+
       Comsat.log(:fn => :notify, :route => "#{route}", :at => :finish, :elapsed => Time.now - start)
+
+      success
     end
   end
 end
