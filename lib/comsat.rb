@@ -10,6 +10,7 @@ require "comsat/version"
 require "comsat/helpers/auth_helper"
 
 require "comsat/services/campfire"
+require "comsat/services/failure"
 require "comsat/services/pagerduty"
 
 module Comsat
@@ -33,6 +34,38 @@ module Comsat
     @logger = logger
   end
 
+  # Public: Turns on mocking mode
+  #
+  # Examples
+  #
+  #   Comsat.mock!
+  #   # => true
+  def self.mock!
+    @mock = true
+  end
+
+  # Public: Checks if mocking mode is enabled
+  #
+  # Examples
+  #
+  #   Comsat.mocking?
+  #   # => false
+  #   Comsat.mock!
+  #   Comsat.mocking?
+  #   # => true
+  #
+  # Returns the state of mocking
+  def self.mocking?
+    !!@mock
+  end
+
+  # Public: Store mocked notifications
+  #
+  # Returns an Array of notifications
+  def self.notifications
+    @notifications ||= []
+  end
+
   # Public: View the the currently instrumented logger
   #
   # Returns the logger object
@@ -48,5 +81,18 @@ module Comsat
   # Returns the response from calling the logger with the arguments
   def self.log(data, &blk)
     logger.call({:lib => :comsat}.merge(data), &blk)
+  end
+
+  # Public: Reset the mocked data
+  #
+  # Examples
+  #
+  #   Comsat.notifications
+  #   # => [{..}]
+  #   Comsat.reset!
+  #   Comsat.notifications
+  #   # => []
+  def self.reset!
+    @notifications = []
   end
 end
