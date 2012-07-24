@@ -2,6 +2,8 @@ require "cgi"
 require "json"
 require "rest_client"
 
+require "vendor/pony"
+
 require "comsat/client"
 require "comsat/route"
 require "comsat/service"
@@ -12,6 +14,7 @@ require "comsat/helpers/auth_helper"
 require "comsat/services/campfire"
 require "comsat/services/failure"
 require "comsat/services/pagerduty"
+require "comsat/services/sendgrid"
 
 module Comsat
 

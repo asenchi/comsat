@@ -15,10 +15,16 @@ module Comsat
     end
 
     def self.to_hash
+      if @uri.user.include?('%')
+        user = CGI.unescape(@uri.user)
+      else
+        user = @uri.user
+      end
+
       {
         :name     => @uri.scheme,
-        :api_key  => @uri.user,
-        :username => @uri.user,
+        :api_key  => user,
+        :username => user,
         :password => @uri.password,
         :host     => @uri.host,
         :scope    => CGI.unescape(@uri.path.gsub(/\A\//, ''))
