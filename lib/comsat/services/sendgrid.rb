@@ -16,7 +16,7 @@ module Comsat
       message = "[#{source}] #{message}"
 
       ::Pony.mail(
-        :from => "comsat@heroku.com",
+        :from => "#{source}@comsat.notify",
         :to => @credentials.scope,
         :subject => message,
         :body => "Notification from Comsat\n\nMessage-ID: #{id}",
@@ -27,7 +27,7 @@ module Comsat
           :user_name => sendgrid_user,
           :password => sendgrid_api_key,
           :authentication => :plain,
-          :domain => "heroku.com"
+          :domain => "comsat.notify"
         }
       )
     end
