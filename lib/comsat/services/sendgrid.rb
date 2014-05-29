@@ -15,7 +15,7 @@ module Comsat
       source = data[:source]
       message = "[#{source}] #{message}"
 
-      ::Pony.mail(
+      Pony.mail(
         :from => "#{source}@comsat.notify",
         :to => @credentials.scope,
         :subject => message,

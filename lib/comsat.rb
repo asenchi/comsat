@@ -1,9 +1,8 @@
 require "cgi"
 require "json"
 require "octokit"
+require "pony"
 require "rest_client"
-
-require "vendor/pony"
 
 require "comsat/client"
 require "comsat/route"
