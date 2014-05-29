@@ -16,6 +16,7 @@ Gem::Specification.new do |gem|
   gem.version       = Comsat::VERSION
 
   gem.add_runtime_dependency('octokit')
+  gem.add_runtime_dependency('pony')
   gem.add_runtime_dependency('rest-client')
   gem.add_runtime_dependency('scrolls')
 
