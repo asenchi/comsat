@@ -1,5 +1,6 @@
 require "cgi"
 require "json"
+require "octokit"
 require "rest_client"
 
 require "vendor/pony"
@@ -13,6 +14,7 @@ require "comsat/helpers/auth_helper"
 
 require "comsat/services/campfire"
 require "comsat/services/failure"
+require "comsat/services/github"
 require "comsat/services/pagerduty"
 require "comsat/services/sendgrid"
 

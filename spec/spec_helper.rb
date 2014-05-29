@@ -4,7 +4,7 @@ require 'comsat'
 require 'scrolls'
 require 'stringio'
 
-Scrolls::Log.start(StringIO.new)
+Scrolls.init(:stream => StringIO.new)
 
 module TestLogger
   def self.log(data, &blk)
