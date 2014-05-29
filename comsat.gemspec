@@ -15,6 +15,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Comsat::VERSION
 
+  gem.add_runtime_dependency('octokit')
   gem.add_runtime_dependency('rest-client')
   gem.add_runtime_dependency('scrolls')
 
