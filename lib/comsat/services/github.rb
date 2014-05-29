@@ -66,8 +66,7 @@ module Comsat
     end
 
     def close_issue(issue, data)
-      body = "[#{data[:source]}] #{data[:message_id]}\n#{data[:message]}"
-      github_client.add_comment(github_repo, issue, body)
+      github_client.add_comment(github_repo, issue, data[:message])
       github_client.close_issue(github_repo, issue)
     end
   end
