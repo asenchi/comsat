@@ -3,7 +3,10 @@ module Comsat
     def send_notice(data)
       contact_pagerduty(:trigger, data)
     end
-    alias :send_alert :send_notice
+
+    def send_notice(data)
+      contact_pagerduty(:acknowledge, data)
+    end
 
     def send_resolve(data)
       contact_pagerduty(:resolve, data)
