@@ -1,6 +1,6 @@
 module Comsat
   class Pagerduty < Service::Base
-    def send_notice(data)
+    def send_alert(data)
       contact_pagerduty(:trigger, data)
     end
 
